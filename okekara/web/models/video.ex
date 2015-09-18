@@ -25,4 +25,8 @@ defmodule Okekara.Video do
     model
     |> cast(params, @required_fields, @optional_fields)
   end
+
+  def search(term) do
+    GimmeKaraoke.search(term)
+  end
 end

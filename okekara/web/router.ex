@@ -17,5 +17,6 @@ defmodule Okekara.Router do
   scope "/api", Okekara do
     pipe_through :api
     resources "/playlists", PlaylistController
+    get "/search" , SearchController, :index
   end
 end
