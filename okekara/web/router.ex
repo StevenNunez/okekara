@@ -14,9 +14,9 @@ defmodule Okekara.Router do
   end
 
   # Other scopes may use custom stacks.
-  scope "/api", Okekara do
+  scope "/api/v1", Okekara do
     pipe_through :api
     resources "/playlists", PlaylistController
-    get "/search" , SearchController, :index
+    get "/videos" , VideoController, :index
   end
 end

@@ -1,5 +1,6 @@
 defmodule Okekara.Video do
   use Okekara.Web, :model
+  alias Okekara.Repo
 
   schema "videos" do
     field :title, :string
@@ -24,9 +25,19 @@ defmodule Okekara.Video do
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)
+    |> unique_constraint(:video_id)
   end
 
   def search(term) do
     GimmeKaraoke.search(term)
+    |> Enum.filter(&(&1.video_id))
+    |> Enum.map(fn (video) ->
+      record = changeset(%__MODULE__{}, Map.from_struct(video))
+      case Repo.insert(record) do
+        {:ok, video} -> video
+        {:error, %Ecto.Changeset{errors: [video_id: "has already been taken"]}} ->
+          Repo.get_by!(__MODULE__, video_id: video.video_id)
+      end
+    end)
   end
 end

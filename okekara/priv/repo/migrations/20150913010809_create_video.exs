@@ -11,5 +11,7 @@ defmodule Okekara.Repo.Migrations.CreateVideo do
       timestamps
     end
 
+    create unique_index(:videos, [:video_id])
+
   end
 end

@@ -7,6 +7,6 @@ defmodule Okekara.Repo.Migrations.CreatePlaylist do
 
       timestamps
     end
-
+    create unique_index(:playlists, [:name])
   end
 end
