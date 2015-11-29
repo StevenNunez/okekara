@@ -2,7 +2,7 @@ defmodule Okekara.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  # channel "rooms:*", Okekara.RoomChannel
+  channel "playlists:*", Okekara.PlaylistChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket

@@ -28,6 +28,11 @@ defmodule Okekara.Video do
     |> unique_constraint(:video_id)
   end
 
+  def find_by_ids(ids) do
+    from video in Okekara.Video,
+    where: video.id in ^ids
+  end
+
   def search(term) do
     GimmeKaraoke.search(term)
     |> Enum.filter(&(&1.video_id))

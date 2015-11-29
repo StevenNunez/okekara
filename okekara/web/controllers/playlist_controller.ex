@@ -27,16 +27,23 @@ defmodule Okekara.PlaylistController do
   end
 
   def show(conn, %{"id" => id}) do
-    playlist = Repo.get!(Playlist, id)
+    playlist = Repo.get!(Playlist, id) |> Repo.preload([:videos])
     render conn, "show.json", playlist: playlist
   end
 
   def update(conn, %{"id" => id, "playlist" => playlist_params}) do
     playlist = Repo.get!(Playlist, id)
+
+    for video_id <- playlist_params["video_ids"] do
+      selection = build(playlist, :selections, video_id: String.to_integer(video_id))
+      Repo.insert(selection)
+    end
+
     changeset = Playlist.changeset(playlist, playlist_params)
 
     case Repo.update(changeset) do
       {:ok, playlist} ->
+        playlist = playlist |> Repo.preload(:videos)
         render(conn, "show.json", playlist: playlist)
       {:error, changeset} ->
         conn

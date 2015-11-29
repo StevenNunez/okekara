@@ -6,11 +6,14 @@ defmodule Okekara.PlaylistView do
   end
 
   def render("show.json", %{playlist: playlist}) do
-    %{playlist: render_one(playlist, Okekara.PlaylistView, "playlist.json")}
+    %{
+      playlist: render_one(playlist, Okekara.PlaylistView, "playlist.json"),
+      videos: render_many(playlist.videos, Okekara.VideoView, "video.json")}
   end
 
   def render("playlist.json", %{playlist: playlist}) do
     %{id: playlist.id,
-      name: playlist.name}
+      name: playlist.name,
+      video_ids: Enum.map(playlist.videos, &(&1.id))}
   end
 end
