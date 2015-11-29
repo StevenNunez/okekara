@@ -17,7 +17,8 @@ defmodule Okekara.PlaylistChannel do
   end
 
   def handle_in("playlist_update", payload, socket) do
-    broadcast socket, "playlistUpdate", payload
+    broadcast socket, "playlistUpdate", Map.delete(payload, "playlists")
+    {:noreply, socket}
   end
 
   # It is also common to receive messages from the client and
